@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Types.fs" />
+    <Compile Include="RuleEngine.fs" />
+    <Compile Include="Configuration.fs" />
+    <Compile Include="Shells/IShell.fs" />
+    <Compile Include="Shells/PowerShellShell.fs" />
+    <Compile Include="Shells/BashShell.fs" />
+    <Compile Include="Shells/ZshShell.fs" />
+    <Compile Include="Shells/ShellDetector.fs" />
+  </ItemGroup>
+
+</Project>

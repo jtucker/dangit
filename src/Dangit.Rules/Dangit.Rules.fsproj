@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="GitPush.fs" />
+    <Compile Include="GitAdd.fs" />
+    <Compile Include="GitBranchDelete.fs" />
+    <Compile Include="GitBranchExists.fs" />
+    <Compile Include="GitCheckout.fs" />
+    <Compile Include="GitDiffStaged.fs" />
+    <Compile Include="GitPull.fs" />
+    <Compile Include="GitStash.fs" />
+    <Compile Include="GitCommitAmend.fs" />
+    <Compile Include="GitRebaseNoChanges.fs" />
+    <Compile Include="GitUnknownCommand.fs" />
+    <Compile Include="CdMkdir.fs" />
+    <Compile Include="CdParent.fs" />
+    <Compile Include="Dry.fs" />
+    <Compile Include="CatDir.fs" />
+    <Compile Include="RmDir.fs" />
+    <Compile Include="MkdirP.fs" />
+    <Compile Include="CommandNotFound.fs" />
+    <Compile Include="NoSuchFile.fs" />
+    <Compile Include="SudoCommand.fs" />
+    <Compile Include="FixFile.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dangit.Core\Dangit.Core.fsproj" />
+  </ItemGroup>
+
+</Project>

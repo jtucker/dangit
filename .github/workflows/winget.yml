@@ -1,0 +1,55 @@
+# Winget Package Submission Pipeline for dangit CLI
+# Triggered after the Release workflow completes successfully.
+# Creates/updates a winget manifest and submits a PR to microsoft/winget-pkgs.
+#
+# PREREQUISITES:
+#   - Set the WINGET_TOKEN secret in your repository settings.
+#     This must be a GitHub PAT with public_repo scope, authorized to
+#     submit PRs to microsoft/winget-pkgs.
+#
+# PACKAGE ID: codingforbeer.dangit
+
+name: Winget
+
+on:
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  winget:
+    name: Submit to winget-pkgs
+    runs-on: windows-latest
+    # Only run when the release workflow succeeded and was triggered by a tag
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      startsWith(github.event.workflow_run.head_branch, 'v')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Extract version from the tag (strip leading 'v')
+      - name: Extract version
+        id: version
+        shell: pwsh
+        run: |
+          $tag = "${{ github.event.workflow_run.head_branch }}"
+          $ver = $tag -replace '^v', ''
+          "version=$ver" | Out-File -Append -FilePath $env:GITHUB_OUTPUT
+          Write-Host "Version: $ver"
+
+      # Submit manifest update to microsoft/winget-pkgs
+      # Uses vedantmgoyal9/winget-releaser to automate manifest creation
+      - name: Update winget manifest
+        uses: vedantmgoyal9/winget-releaser@v2
+        with:
+          identifier: codingforbeer.dangit
+          version: ${{ steps.version.outputs.version }}
+          installers-regex: 'dangit-win-.*\.zip$'
+          token: ${{ secrets.WINGET_TOKEN }}
+          # The release tag used to find assets
+          release-tag: ${{ github.event.workflow_run.head_branch }}

@@ -1,0 +1,24 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- F# Runtime -->
+    <PackageVersion Include="FSharp.Core" Version="10.0.102" />
+    <!-- CLI Framework -->
+    <PackageVersion Include="Spectre.Console" Version="0.50.0" />
+    <PackageVersion Include="Spectre.Console.Cli" Version="0.50.0" />
+    <!-- Telemetry -->
+    <PackageVersion Include="OpenTelemetry" Version="1.11.2" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
+    <PackageVersion Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.3.0" />
+    <!-- Testing -->
+    <PackageVersion Include="Expecto" Version="10.2.2" />
+    <PackageVersion Include="Expecto.FsCheck" Version="10.2.1" />
+    <PackageVersion Include="YoloDev.Expecto.TestSdk" Version="0.15.3" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
+    <PackageVersion Include="FsCheck" Version="2.16.5" />
+  </ItemGroup>
+</Project>

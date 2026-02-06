@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="CommandTests.fs" />
+    <Compile Include="RuleTests.fs" />
+    <Compile Include="RuleEngineTests.fs" />
+    <Compile Include="ConfigurationTests.fs" />
+    <Compile Include="TelemetryTests.fs" />
+    <Compile Include="GitRuleTests.fs" />
+    <Compile Include="ShellTests.fs" />
+    <Compile Include="CoreRuleTests.fs" />
+    <Compile Include="GitRuleTests.fs" />
+    <Compile Include="TelemetryTests.fs" />
+    <Compile Include="CliTests.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Dangit.Core\Dangit.Core.fsproj" />
+    <ProjectReference Include="..\..\src\Dangit.Rules\Dangit.Rules.fsproj" />
+    <ProjectReference Include="..\..\src\Dangit.Telemetry\Dangit.Telemetry.fsproj" />
+    <ProjectReference Include="..\..\src\Dangit.Cli\Dangit.Cli.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Expecto" />
+    <PackageReference Include="Expecto.FsCheck" />
+    <PackageReference Include="FsCheck" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="YoloDev.Expecto.TestSdk" />
+  </ItemGroup>
+
+</Project>
