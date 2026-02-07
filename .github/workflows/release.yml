@@ -14,30 +14,8 @@ permissions:
 
 jobs:
   build:
-    name: Build (${{ matrix.rid }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - rid: win-x64
-            os: windows-latest
-            archive: zip
-          - rid: win-arm64
-            os: windows-latest
-            archive: zip
-          - rid: linux-x64
-            os: ubuntu-latest
-            archive: tar.gz
-          - rid: linux-arm64
-            os: ubuntu-latest
-            archive: tar.gz
-          - rid: osx-x64
-            os: macos-latest
-            archive: tar.gz
-          - rid: osx-arm64
-            os: macos-latest
-            archive: tar.gz
+    name: Build release artifacts
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -49,47 +27,35 @@ jobs:
           dotnet-version: '10.0.x'
           dotnet-quality: 'preview'
 
-      - name: Publish for ${{ matrix.rid }}
-        run: >-
-          dotnet publish src/Dangit.Cli/Dangit.Cli.fsproj
-          -c Release
-          -r ${{ matrix.rid }}
-          -o ./publish/${{ matrix.rid }}
-
-      # Create zip archive for Windows
-      - name: Archive (zip)
-        if: matrix.archive == 'zip'
+      - name: Publish all RIDs
         shell: pwsh
-        run: |
-          Compress-Archive -Path ./publish/${{ matrix.rid }}/* -DestinationPath ./dangit-${{ matrix.rid }}.zip
+        run: ./publish-all.ps1
 
-      # Create tar.gz archive for Linux and macOS
-      - name: Archive (tar.gz)
-        if: matrix.archive == 'tar.gz'
+      - name: Create archives and checksums
+        shell: bash
         run: |
-          tar -czf ./dangit-${{ matrix.rid }}.tar.gz -C ./publish/${{ matrix.rid }} .
-
-      # Generate SHA256 checksum for the archive
-      - name: Generate SHA256 checksum (Windows)
-        if: matrix.archive == 'zip'
-        shell: pwsh
-        run: |
-          $hash = (Get-FileHash -Algorithm SHA256 ./dangit-${{ matrix.rid }}.zip).Hash.ToLower()
-          "$hash  dangit-${{ matrix.rid }}.zip" | Out-File -Encoding utf8NoBOM -FilePath ./dangit-${{ matrix.rid }}.zip.sha256
-
-      - name: Generate SHA256 checksum (Linux/macOS)
-        if: matrix.archive == 'tar.gz'
-        run: |
-          sha256sum ./dangit-${{ matrix.rid }}.tar.gz > ./dangit-${{ matrix.rid }}.tar.gz.sha256
+          set -euo pipefail
+          for dir in artifacts/*; do
+            rid="$(basename "$dir")"
+            if [[ "$rid" == win-* ]]; then
+              zip -r "dangit-${rid}.zip" "$dir"
+              sha256sum "dangit-${rid}.zip" > "dangit-${rid}.zip.sha256"
+            else
+              tar -czf "dangit-${rid}.tar.gz" -C "$dir" .
+              sha256sum "dangit-${rid}.tar.gz" > "dangit-${rid}.tar.gz.sha256"
+            fi
+          done
 
       # Upload build artifacts for the release job
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dangit-${{ matrix.rid }}
+          name: dangit-release-artifacts
           path: |
-            ./dangit-${{ matrix.rid }}.${{ matrix.archive }}
-            ./dangit-${{ matrix.rid }}.${{ matrix.archive }}.sha256
+            ./dangit-*.zip
+            ./dangit-*.zip.sha256
+            ./dangit-*.tar.gz
+            ./dangit-*.tar.gz.sha256
 
   release:
     name: Create GitHub Release
