@@ -46,10 +46,10 @@ jobs:
         run: dotnet restore -r ${{ matrix.rid }}
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release -r ${{ matrix.rid }}
+        run: dotnet build --no-restore --configuration Release
 
       - name: Test
-        run: dotnet test --no-build --configuration Release -r ${{ matrix.rid }}
+        run: dotnet test --no-build --configuration Release
 
       # Formatting check — ensures code style consistency
       - name: Check formatting
