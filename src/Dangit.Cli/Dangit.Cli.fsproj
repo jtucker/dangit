@@ -5,8 +5,6 @@
     <AssemblyName>dangit</AssemblyName>
     <Version>0.1.0</Version>
     <Product>dangit</Product>
-    <Description>Cross-platform command corrector</Description>
-    <Company />
     <Copyright>MIT License</Copyright>
   </PropertyGroup>
 

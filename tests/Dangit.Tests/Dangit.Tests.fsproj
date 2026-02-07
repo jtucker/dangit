@@ -9,8 +9,6 @@
     <Compile Include="RuleTests.fs" />
     <Compile Include="RuleEngineTests.fs" />
     <Compile Include="ConfigurationTests.fs" />
-    <Compile Include="TelemetryTests.fs" />
-    <Compile Include="GitRuleTests.fs" />
     <Compile Include="ShellTests.fs" />
     <Compile Include="CoreRuleTests.fs" />
     <Compile Include="GitRuleTests.fs" />
